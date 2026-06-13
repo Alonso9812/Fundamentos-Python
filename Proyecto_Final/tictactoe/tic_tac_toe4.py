@@ -2,24 +2,35 @@ import tkinter as tk
 from tkinter import messagebox
 import random
 import pygame
+import os 
 
+BASE_DIR = os.path.dirname(os.path.abspath(__file__))
+ASSETS_DIR = os.path.join(BASE_DIR, "assets")
 # ---------------- SONIDO ---------------- #
 
 pygame.mixer.init()
-
+print("Mixer inicializado correctamente")
 def play_sound(sound):
     try:
-        pygame.mixer.Sound(sound).play()
-    except:
-        pass
+        sound_path = os.path.join(ASSETS_DIR, sound)
+        pygame.mixer.Sound(sound_path).play()
+
+    except Exception as e:
+        print("ERROR SONIDO:", e)
 
 def play_music():
     try:
-        pygame.mixer.music.load("018136_funny-music-orchestra-wav-54828.mp3")
+        music_path = os.path.join(
+            ASSETS_DIR,
+            "018136_funny-music-orchestra-wav-54828.mp3"
+        )
+
+        pygame.mixer.music.load(music_path)
         pygame.mixer.music.set_volume(0.3)
         pygame.mixer.music.play(-1)
-    except:
-        pass
+
+    except Exception as e:
+        print("ERROR MUSICA:", e)
 
 
 # ================ JUEGO ================= #
@@ -66,7 +77,7 @@ class TicTacToeDeluxe:
                  fg="white", bg="#1e1e1e", font=("Arial", 14)).pack(pady=10)
 
     def start_game(self):
-        play_sound("click.wav")
+        play_sound("you-win-sfx-442128.mp3")
         self.start_frame.destroy()
         self.game_screen()
 
@@ -121,8 +132,8 @@ class TicTacToeDeluxe:
         if self.board[pos] != " ":
             return
 
-        play_sound("click.wav")
-
+        play_sound("you-win-sfx-442128.mp3")
+    
         self.board[pos] = "O"
         self.buttons[pos]["text"] = "O"
         self.buttons[pos]["fg"] = "#66aaff"
